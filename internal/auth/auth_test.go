@@ -32,7 +32,7 @@ func TestGetAPIKeyWithSpecialCharacters(t *testing.T) {
 	if err != nil {
 		t.Errorf("Expected no error, got %v", err)
 	}
-	if apiKey != "test-api-key@#$%^&*()_+" {
+	if apiKey != "test-api-key@#$^&*()_+" {
 		t.Errorf("Expected API key 'test-api-key@#$^&*()_+', got '%q'", apiKey)
 	}
 }
