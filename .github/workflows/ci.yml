@@ -41,4 +41,4 @@ jobs:
         run: staticcheck./...
 
       - name: Run gofmt
-        run: test -z $(go fmt ./...)  
+        run: test -z $(go fmt ./...)
