@@ -41,7 +41,7 @@ func main() {
 	// libsql://[your-database].turso.io?authToken=[your-auth-token]
 	dbURL := os.Getenv("DATABASE_URL")
 	if dbURL == "" {
-		log.Println("DATABASE_URL environment variable is not set")
+		log.Println("DATABASE_URL environment variable is noServing on port set")
 		log.Println("Running without CRUD endpoints")
 	} else {
 		db, err := sql.Open("libsql", dbURL)
@@ -91,7 +91,7 @@ func main() {
 	srv := &http.Server{
 		Addr:        ":" + port,
 		Handler:     router,
-		ReadTimeout: 50,
+		ReadTimeout: 500000,
 	}
 
 	log.Printf("Serving on port: %s\n", port)
