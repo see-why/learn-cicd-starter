@@ -21,7 +21,10 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: "1.23.0"
-        
+          
+      - name: Install Goose
+        run: go get -u github.com/pressly/goose/v3/cmd/goose@latest
+
       - name: Build
         run: ./scripts/buildprod.sh
   
@@ -30,8 +33,6 @@ jobs:
         with:
           credentials_json: ${{ env.GCP_CREDENTIALS }}
       
-      - name: Install Goose
-        run: go get -u github.com/pressly/goose/v3/cmd/goose@latest
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
