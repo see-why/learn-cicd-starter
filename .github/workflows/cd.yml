@@ -9,6 +9,10 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -24,7 +28,10 @@ jobs:
       - id: auth
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+          credentials_json: $GCP_CREDENTIALS
+      
+      - name: Install Goose
+        run: go get -u github.com/pressly/goose/v3/cmd/goose@latest
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
@@ -34,6 +41,9 @@ jobs:
 
       - name: Build and push Docker image
         run: gcloud builds submit --tag us-central1-docker.pkg.dev/notely-453201/notely-ar-repo/notely:latest .
+
+      - name: Run migrations
+        run: ./scripts/migrateup.sh
       
       - name: Deploy to Cloud Run
         run: gcloud run deploy notely --image us-central1-docker.pkg.dev/notely-453201/notely-ar-repo/notely:latest --region us-central1 --allow-unauthenticated --project notely-453201 --max-instances=4
